@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","u":"allclasses-index.html"},{"p":"org.github.stevemorse.disnlpbot","l":"Main"}];updateSearchResults();
