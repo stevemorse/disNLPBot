@@ -13,15 +13,16 @@ public class Main {
 		/**
 		 * The Discord Bot token
 		 */
-		  final String token =  "ODAyMTg4NTc4NzA4NTIwOTgw.YArmVQ.gD5GGSF8f66GIENK8BTocfC9PXA";
+		  //final String token =  "ODAyMTg4NTc4NzA4NTIwOTgw.YArmVQ.gD5GGSF8f66GIENK8BTocfC9PXA";
 		  /**
 		   * The filename to read and write from and to
 		   */
-		  final String filename = "posts.txt";
+		  //final String filename = "posts.txt";
+		  
 		  /**
 		   * The instantiated Bot
 		   */
-		  final DisNLPBot bot = new DisNLPBot(token, filename);
+		  final DisNLPBot bot = new DisNLPBot();
 		  bot.execute();
 	}//main
 }//Main

@@ -7,8 +7,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -42,9 +46,16 @@ public final class DisNLPBot {
 	 */
 	private String filename = "";
 	/**
+	 * A String of the name of the resource file
+	 */
+	private final String resourceFileName = "res.json";
+	/**
 	 * default constructor
 	 */
-	public DisNLPBot() {}
+	public DisNLPBot() {
+		this.setToken(this.getResources(resourceFileName, "token"));
+		this.setFilename(this.getResources(resourceFileName, "filename"));
+	}
 	/**
 	 * constructor
 	 * @param token String
@@ -253,4 +264,36 @@ public final class DisNLPBot {
 		Collections.sort(posts);
 		return posts.get(posts.size() -1);
 	}//getLastPost
+	/**
+	 * Gets the value of a resource from the resource file when requested by key
+	 * @param resourcefileName A String of the name of the resource file
+	 * @param key String that is the key (or resource type name) of a json key value pair
+	 * @return String that is the value of the resource requested by its key (type name)
+	 */
+	private String getResources(String resourcefileName, String key) {
+		StringBuilder value = new StringBuilder();
+		List<String> lines = null;
+		ClassLoader classLoader = getClass().getClassLoader();
+		File file = new File(classLoader.getResource(resourcefileName).getFile());		
+		try {
+			String content = new String(Files.readAllBytes(file.toPath()));
+			String [] arrLines = content.split(",");
+			lines = Arrays.asList(arrLines);
+		} catch (IOException ioe) {
+			System.out.println(ioe.getMessage());
+			ioe.printStackTrace();
+		}//catch
+		lines.stream().forEach(line-> {
+			if(line.contains(key)) {
+				//extract value
+				String [] pair = line.split(":");
+				if(!value.isEmpty()) {
+					value.delete(0, value.length() -1);
+				}//if not empty
+				value.append(pair[1].trim().replaceAll("\"", "").replaceAll("}", "").replaceAll("\r|\n", ""));
+			}//if key in line
+		});
+		System.out.println("resource file: " + resourcefileName + " key: " + key + " value returned: " + value);
+		return value.toString();
+	}//getResources
 }//class
