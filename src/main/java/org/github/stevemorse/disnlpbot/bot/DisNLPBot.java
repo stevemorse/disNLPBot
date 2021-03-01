@@ -1,4 +1,4 @@
-package org.github.stevemorse.disnlpbot;
+package org.github.stevemorse.disnlpbot.bot;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -240,7 +240,7 @@ public final class DisNLPBot {
 	 * Reads a serialized file of Post objects and returns them as a List
 	 * @return List of Posts
 	 */
-	private List<Post> readFromFile() {
+	public List<Post> readFromFile() {
 		ArrayList<Post> posts = new ArrayList<Post>();
 		try {
 			FileInputStream fis = new FileInputStream(filename);

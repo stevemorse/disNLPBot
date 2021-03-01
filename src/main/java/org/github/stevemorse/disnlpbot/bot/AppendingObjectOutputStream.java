@@ -1,4 +1,4 @@
-package org.github.stevemorse.disnlpbot;
+package org.github.stevemorse.disnlpbot.bot;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

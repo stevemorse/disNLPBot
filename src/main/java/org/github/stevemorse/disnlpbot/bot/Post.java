@@ -1,4 +1,4 @@
-package org.github.stevemorse.disnlpbot;
+package org.github.stevemorse.disnlpbot.bot;
 
 import java.io.Serializable;
 import java.time.Instant;

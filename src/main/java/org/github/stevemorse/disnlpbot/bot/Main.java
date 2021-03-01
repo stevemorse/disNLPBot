@@ -1,4 +1,5 @@
-package org.github.stevemorse.disnlpbot;
+package org.github.stevemorse.disnlpbot.bot;
+
 /**
  * The driver for the disNLPBot.  Contains java main method
  * @author Steve Morse
