@@ -1,6 +1,6 @@
 # disNLPBot
 To add to a Discord guild/server:
-(from:https://www.alphr.com/add-bots-discord-server/)
+(some content from:https://www.alphr.com/add-bots-discord-server/)
 
 Step 1 – Turn On Administrator Access
 
