@@ -2,7 +2,6 @@ package org.github.stevemorse.disnlpbot.nlp;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,10 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.github.stevemorse.disnlpbot.bot.AppendingObjectOutputStream;
+import org.deeplearning4j.bagofwords.vectorizer.TfidfVectorizer;
+import org.deeplearning4j.bagofwords.vectorizer.TfidfVectorizer.Builder;
+import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.github.stevemorse.disnlpbot.bot.DisNLPBot;
 import org.github.stevemorse.disnlpbot.bot.Post;
-import org.deeplearning4j.bagofwords.vectorizer.TfidfVectorizer;
 import org.nd4j.linalg.dataset.DataSet;
 
 public class TfIdfDataBuilder {
@@ -31,11 +31,18 @@ public class TfIdfDataBuilder {
 	}
 	
 	public List<DataSet> execute() {
-		slices.stream().forEachOrdered((Consumer<? super List<Post>>) slice -> {
+		/*
+			slices.stream().forEach(slice -> {
 			String content = getContent(slice);
 			DataSet ds = vectorize(content);
 			dataSets.add(ds);
 		});
+		*/
+		for (List<Post> slice : slices) {
+		    String content = getContent(slice);
+			DataSet ds = vectorize(content);
+			dataSets.add(ds);
+		}
 		return dataSets;	
 	}//execute
 	
@@ -49,8 +56,11 @@ public class TfIdfDataBuilder {
 	}//getContent
 	
 	private DataSet vectorize(String content) {
-		TfidfVectorizer vec = new TfidfVectorizer();
-		//vec.stopwords = getStopWords();
+		Builder builder = new Builder();
+		builder.setTokenizerFactory(new DefaultTokenizerFactory());
+		builder.setStopWords(getStopWords());
+		TfidfVectorizer vec = builder.build();
+		//TfidfVectorizer vec = new TfidfVectorizer();
 		DataSet ds = vec.vectorize(content,"tf_idf");
 		return ds;
 	}//vectorize
@@ -78,22 +88,13 @@ public class TfIdfDataBuilder {
 		dataSets.stream().forEachOrdered(ds -> {	
 			try {
 				String filename = "timeslice" + this.writeFileCounter++;
-				File f= new File(filename);
-				FileOutputStream fos = null;
+				File f= new File(filename);		
 				ObjectOutputStream oos = null;
-				if(f.exists()) {
-					fos = new FileOutputStream(f);
-					oos = new AppendingObjectOutputStream(fos);
-				}//if
-				else {
-					fos = new FileOutputStream(f);
-					oos = new ObjectOutputStream(fos);
-				}//else
+				oos = new ObjectOutputStream( new FileOutputStream(f));
 				System.out.println("File: " + f.getName() + " at : " + f.getCanonicalPath());
 				oos.writeObject(ds);
 				oos.flush();
 				oos.close();
-				fos.close();
 			} catch (IOException ioe) {
 				System.out.println(ioe.getMessage());
 				ioe.printStackTrace();

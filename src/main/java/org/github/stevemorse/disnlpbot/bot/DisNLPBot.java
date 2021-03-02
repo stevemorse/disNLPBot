@@ -7,8 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -22,13 +20,15 @@ import discord4j.common.util.Snowflake;
 import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
+import discord4j.core.object.entity.Guild;
 import discord4j.core.object.entity.Message;
+import discord4j.core.object.entity.User;
 import discord4j.core.object.entity.channel.GuildChannel;
 import discord4j.core.object.entity.channel.MessageChannel;
-import discord4j.core.object.entity.User;
-import discord4j.core.object.entity.Guild;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import org.github.stevemorse.disnlpbot.bot.Post;
 /**
  * The DisNLPBot strips all messages from all channels of a Discord guild to which it attached and stores them
  * to a file as serialized objects
@@ -231,7 +231,7 @@ public final class DisNLPBot {
 	 * AppendingObjectOutputStream if it does
 	 * @param posts List of Posts
 	 */
-	private void writeToFile(List<Post> posts) {
+	public void writeToFile(List<Post> posts) {
 		try {
 			File f= new File(filename);
 			FileOutputStream fos = null;
@@ -267,6 +267,9 @@ public final class DisNLPBot {
 			Object obj = ois.readObject();
 			ois.close();
 			posts = (ArrayList<Post>) obj;
+			if(posts.size() == 0) {
+				System.err.println("failure to obtain any data from input object (<Posts>) file");
+			}
 		} catch (IOException | ClassNotFoundException ioe) {
 			System.out.println(ioe.getMessage());
 			ioe.printStackTrace();
