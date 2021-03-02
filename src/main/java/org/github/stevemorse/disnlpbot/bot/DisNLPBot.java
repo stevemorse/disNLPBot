@@ -48,13 +48,16 @@ public final class DisNLPBot {
 	/**
 	 * A String of the name of the resource file
 	 */
-	private final String resourceFileName = "res.json";
+	private String resourceFileName = "";
+	
 	/**
 	 * default constructor
 	 */
 	public DisNLPBot() {
+		this.setResourceFileName("res.json");
 		this.setToken(this.getResources(resourceFileName, "token"));
 		this.setFilename(this.getResources(resourceFileName, "filename"));
+		this.setResourceFileName(resourceFileName);
 	}
 	/**
 	 * constructor
@@ -62,6 +65,7 @@ public final class DisNLPBot {
 	 * @param filename String
 	 */
 	public DisNLPBot(String token, String filename) {
+		this.setResourceFileName("res.json");
 		this.setToken(token);
 		this.setFilename(filename);
 	}
@@ -92,6 +96,20 @@ public final class DisNLPBot {
 	 */
 	public void setFilename(String filename) {
 		this.filename = filename;
+	}
+	/**
+	 * getter
+	 * @return resourceFileName String
+	 */
+	public String getResourceFileName() {
+		return resourceFileName;
+	}
+	/**
+	 * setter
+	 * @param resourceFileName String
+	 */
+	public void setResourceFileName(String resourceFileName) {
+		this.resourceFileName = resourceFileName;
 	}
 	/**
 	 * The execute method picks up commands written in a discord channel and performs the actions dictated by the 
@@ -270,7 +288,7 @@ public final class DisNLPBot {
 	 * @param key String that is the key (or resource type name) of a json key value pair
 	 * @return String that is the value of the resource requested by its key (type name)
 	 */
-	private String getResources(String resourcefileName, String key) {
+	public String getResources(String resourcefileName, String key) {
 		StringBuilder value = new StringBuilder();
 		List<String> lines = null;
 		ClassLoader classLoader = getClass().getClassLoader();

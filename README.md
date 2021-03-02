@@ -17,5 +17,5 @@ Step 2 - add bot to derver. Requires Administrator Access (see step 1)
 
 go to: https://discord.com/api/oauth2/authorize?client_id=802188578708520980&permissions=74752&scope=bot
 Use the add to server dropbox to select the server you’d like to add the Bot to.
-Tap the continue button
+Tap the continue button. 
 Confirm the permissions and tap the authorize button and complete the Captcha
