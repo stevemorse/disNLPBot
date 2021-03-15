@@ -9,6 +9,7 @@ public class NLPDriver {
 	private final static Long timeSliceSize = 24L;
 	NLPDriver(){}
 	public static void main(String[] args) {
+		//System.out.println(System.getProperty("java.library.path"));
 		TimeSlicer slicer = new TimeSlicer(timeSliceSize);
 		List<List<Post>> slices = slicer.slice();
 		TfIdfDataBuilder dataBuilder = new TfIdfDataBuilder(slices);
