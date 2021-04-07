@@ -37,6 +37,20 @@
 			<artifactId>deeplearning4j-nlp</artifactId>
 			<version>1.0.0-beta7</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.datavec/datavec-data-nlp -->
+		<dependency>
+    		<groupId>org.datavec</groupId>
+    		<artifactId>datavec-data-nlp</artifactId>
+    		<version>1.0.0-beta7</version>
+		</dependency>	
+		<!-- https://mvnrepository.com/artifact/org.nd4j/libnd4j -->
+		<dependency>
+    		<groupId>org.nd4j</groupId>
+    		<artifactId>libnd4j</artifactId>
+    		<version>1.0.0-beta3</version>
+    		<type>pom</type>
+    		<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.nd4j</groupId>
 			<artifactId>nd4j-native</artifactId>

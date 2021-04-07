@@ -15,10 +15,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.apache.uima.resource.ResourceInitializationException;
+import org.datavec.nlp.tokenization.tokenizerfactory.UimaTokenizerFactory;
 import org.deeplearning4j.bagofwords.vectorizer.BaseTextVectorizer;
 import org.deeplearning4j.bagofwords.vectorizer.TfidfVectorizer;
 import org.deeplearning4j.models.word2vec.VocabWord;
 import org.deeplearning4j.models.word2vec.wordstore.VocabCache;
+import org.deeplearning4j.models.word2vec.wordstore.VocabConstructor;
 import org.deeplearning4j.text.documentiterator.BasicLabelAwareIterator;
 import org.deeplearning4j.text.documentiterator.BasicLabelAwareIterator.Builder;
 import org.deeplearning4j.text.documentiterator.DocumentIterator;
@@ -27,6 +30,7 @@ import org.deeplearning4j.text.documentiterator.LabelsSource;
 import org.deeplearning4j.text.sentenceiterator.CollectionSentenceIterator;
 import org.deeplearning4j.text.sentenceiterator.SentenceIterator;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
+import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
 import org.github.stevemorse.disnlpbot.bot.DisNLPBot;
 import org.github.stevemorse.disnlpbot.bot.Post;
 import org.nd4j.linalg.dataset.DataSet;
@@ -62,15 +66,25 @@ public class TfIdfDataBuilder {
 	private String getContent(List<Post> slice) {
 		StringBuilder content = new StringBuilder("");
 		slice.stream().forEachOrdered(post -> {
-			content.append(". ");
-			iterLoadData.add(content.toString());
-			content.append(post.getContent());
+			iterLoadData.add(content.toString().replaceAll("(,|!|\\?|/|#)", " "));
+			content.append(post.getContent().replaceAll("(,|!|\\?|/|#)", " "));
 		});
 		//System.out.println("doc content: " + content.toString().trim());
 		return content.toString().trim();
 	}//getContent
 	
 	private DataSet vectorize(String content, List<Post> slice) {
+		
+		/*
+		vec.setStopWords(getStopWords());
+		CollectionSentenceIterator iter = new CollectionSentenceIterator(iterLoadData);
+		vec.setIterator(iter);
+		vec.setTokenizerFactory(new DefaultTokenizerFactory());
+		List<String> sourcesList = new ArrayList<String>();
+		sourcesList.add("tf_idf");
+		LabelsSource labelSource = new LabelsSource(sourcesList);
+		vec.setLabelsSource(labelSource);
+		*/
 		/*
 		Builder builder = new Builder();
 		builder.setTokenizerFactory(new DefaultTokenizerFactory());
@@ -79,6 +93,7 @@ public class TfIdfDataBuilder {
 		List<String> sourcesList = new ArrayList<String>();
 		sourcesList.add("tf_idf");
 		LabelsSource labelSource = new LabelsSource(sourcesList);
+
 		Class<?> c = null;
 		Field labelsSourceFeild = null;
 		try {
@@ -138,12 +153,13 @@ public class TfIdfDataBuilder {
 			e.printStackTrace();
 		}
 		*/
+        
 		AccessibleTfidfVectorizer.Builder builder = new AccessibleTfidfVectorizer.Builder();
 		builder.setTokenizerFactory(new DefaultTokenizerFactory());
 		builder.setStopWords(getStopWords());
-		builder.resetVocabCache();
 		AccessibleTfidfVectorizer vec = builder.build();
 		vec.getVocabCache().vocabWords().clear();
+		vec.resetVocabCache();
 		System.out.println("vocab cache after clear is:\n" + vec.getVocabCache().numWords());
 		List<String> sourcesList = new ArrayList<String>();
 		sourcesList.add("tf_idf");
