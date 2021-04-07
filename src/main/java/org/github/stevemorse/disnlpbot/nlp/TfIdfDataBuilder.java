@@ -72,87 +72,9 @@ public class TfIdfDataBuilder {
 		//System.out.println("doc content: " + content.toString().trim());
 		return content.toString().trim();
 	}//getContent
-	
+/*	
 	private DataSet vectorize(String content, List<Post> slice) {
 		
-		/*
-		vec.setStopWords(getStopWords());
-		CollectionSentenceIterator iter = new CollectionSentenceIterator(iterLoadData);
-		vec.setIterator(iter);
-		vec.setTokenizerFactory(new DefaultTokenizerFactory());
-		List<String> sourcesList = new ArrayList<String>();
-		sourcesList.add("tf_idf");
-		LabelsSource labelSource = new LabelsSource(sourcesList);
-		vec.setLabelsSource(labelSource);
-		*/
-		/*
-		Builder builder = new Builder();
-		builder.setTokenizerFactory(new DefaultTokenizerFactory());
-		builder.setStopWords(getStopWords());
-		TfidfVectorizer vec = builder.build();
-		List<String> sourcesList = new ArrayList<String>();
-		sourcesList.add("tf_idf");
-		LabelsSource labelSource = new LabelsSource(sourcesList);
-
-		Class<?> c = null;
-		Field labelsSourceFeild = null;
-		try {
-			c = vec.getClass();
-			System.out.println("class is: " + c.toString());
-			labelsSourceFeild = vec.getClass().getDeclaredField("labelsSource");
-			System.out.println("labelsSource is: " + labelsSourceFeild.toString());
-			labelsSourceFeild.setAccessible(true);
-			List<String> sourcesList = new ArrayList<String>();
-			sourcesList.add("tf_idf");
-			LabelsSource labelSource = new LabelsSource(sourcesList);
-			//labelsSourceFeild.set(vec, labelSource);
-			labelsSourceFeild.set(vec, sourcesList);
-			//vec.getLabelsSource().storeLabel("tf_idf");
-		} catch (NoSuchFieldException e) {
-			System.out.println("Could not find field named: " + labelsSourceFeild + " in class: " + c.toString() + "\nAll fields: " +  Arrays.asList(c.getDeclaredFields()));
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        */
-		/*
-		Field labelsSourceFeild = null;
-		Class<?> c = null;
-		CollectionSentenceIterator iter = new CollectionSentenceIterator(iterLoadData);
-		List<String> sourcesList = new ArrayList<String>();
-		sourcesList.add("tf_idf");
-		LabelsSource labelSource = new LabelsSource(sourcesList);
-		TfidfVectorizer vec =  new TfidfVectorizer.Builder()
-            .allowParallelTokenization(false)
-            .setStopWords(getStopWords())
-            .setTokenizerFactory(new DefaultTokenizerFactory())
-            .setIterator(iter)
-            .build();
-		c = vec.getSuperClass();
-		System.out.println("super class is: " + c.toString());
-		try {
-			labelsSourceFeild = vec.getSuperClass().getDeclaredField("labelsSource");
-			System.out.println("labelsSource is: " + labelsSourceFeild.toString());
-			labelsSourceFeild.setAccessible(true);
-			labelsSourceFeild.set(vec, labelSource);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
         
 		AccessibleTfidfVectorizer.Builder builder = new AccessibleTfidfVectorizer.Builder();
 		builder.setTokenizerFactory(new DefaultTokenizerFactory());
@@ -190,7 +112,7 @@ public class TfIdfDataBuilder {
 		}//if slice size != 0
 		return ds;
 	}//vectorize
-	
+*/	
 	private List<String> getStopWords(){
 		List<String> stopwords = new ArrayList<String>();
 		DisNLPBot bot = new DisNLPBot();
