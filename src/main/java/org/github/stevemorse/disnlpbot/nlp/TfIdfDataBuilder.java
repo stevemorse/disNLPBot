@@ -31,6 +31,7 @@ import org.deeplearning4j.text.sentenceiterator.CollectionSentenceIterator;
 import org.deeplearning4j.text.sentenceiterator.SentenceIterator;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
+import org.github.stevemorse.disnlpbot.bot.AppendingObjectOutputStream;
 import org.github.stevemorse.disnlpbot.bot.DisNLPBot;
 import org.github.stevemorse.disnlpbot.bot.Post;
 import org.nd4j.linalg.dataset.DataSet;
@@ -55,23 +56,54 @@ public class TfIdfDataBuilder {
 		Collections.reverse(this.slices);
 		this.slices.stream().forEach(slice -> {
 			System.out.println("slice size is:\n" + slice.size());
-			String content = getContent(slice);
+			String content = getContent(slice,++writeFileCounter);
 			System.out.println("content returned from getContent is:\n" + content);
-			DataSet ds = vectorize(content,slice);
-			dataSets.add(ds);
+			String contentFile = "slice" + writeFileCounter; 
+			//DataSet ds = vectorize(content,slice);
+			//dataSets.add(ds);
+			String[] args = new String[2];
+			args[0] = contentFile;
+			args[1] = content;
+			Vectorizer.main(args);
 		});
 		return dataSets;	
 	}//execute
 	
-	private String getContent(List<Post> slice) {
+	private String getContent(List<Post> slice, int writeFileCounter) {
 		StringBuilder content = new StringBuilder("");
 		slice.stream().forEachOrdered(post -> {
 			iterLoadData.add(content.toString().replaceAll("(,|!|\\?|/|#)", " "));
 			content.append(post.getContent().replaceAll("(,|!|\\?|/|#)", " "));
 		});
 		//System.out.println("doc content: " + content.toString().trim());
+		writeSliceToFile(slice, writeFileCounter);
 		return content.toString().trim();
 	}//getContent
+	
+	private void writeSliceToFile(List<Post> slice, int writeFileCounter) {
+		try {
+			File f= new File("slice" + writeFileCounter);
+			FileOutputStream fos = null;
+			ObjectOutputStream oos = null;
+			if(f.exists()) {
+				fos = new FileOutputStream(f);
+				oos = new AppendingObjectOutputStream(fos);
+			}//if
+			else {
+				fos = new FileOutputStream(f);
+				oos = new ObjectOutputStream(fos);
+			}//else
+			System.out.println("File: " + f.getName() + " at : " + f.getCanonicalPath());
+			oos.writeObject(slice);
+			oos.flush();
+			oos.close();
+			fos.close();
+		} catch (IOException ioe) {
+			System.out.println(ioe.getMessage());
+			ioe.printStackTrace();
+		}//catch
+	}//writeSliceToFile
+	
 /*	
 	private DataSet vectorize(String content, List<Post> slice) {
 		

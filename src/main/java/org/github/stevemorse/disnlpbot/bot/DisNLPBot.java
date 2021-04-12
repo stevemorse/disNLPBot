@@ -142,13 +142,22 @@ public final class DisNLPBot {
 				final List<GuildChannel> channels = (List<GuildChannel>) guildChannelFlux.collectList().block();
 				Collections.reverse(channels);
 				channels.stream().forEach(elem -> {
+					boolean badChannel = false;
 					System.out.println("name: " + elem.getName() + " id: " + elem.getId() + " type: " + elem.getType());
 					if(elem.getType().toString().compareTo("GUILD_TEXT") == 0) {
 						final Flux<Message> messageFlux = ((MessageChannel) elem).getMessagesBefore(now);
-						final List<Message> messages = (List<Message>) messageFlux.collectList().block();
-			    		Collections.reverse(messages);
-			    		messages.stream().forEach(e -> posts.add(getMessageData(e)));
-			    		System.out.println("total posts in channel: " + posts.size() + "\n");
+						List<Message> messages = null;
+						try {
+							messages = (List<Message>) messageFlux.collectList().block();
+						} catch (Exception e) {
+							System.out.println("caught execption type: " + e.getClass() + " message: " + e.getMessage());
+							badChannel = true;
+						}
+						if (!badChannel) {
+							Collections.reverse(messages);
+							messages.stream().forEach(e -> posts.add(getMessageData(e)));
+							System.out.println("total posts in channel: " + posts.size() + "\n");
+						}//if not badChannel
 					}//end if elem type
 				});//end lamda elems
 				writeToFile(posts);

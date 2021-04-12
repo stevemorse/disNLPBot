@@ -66,7 +66,7 @@ public class Post implements Serializable, Comparable<Object> {
 	 */
     @Override
 	public String toString() {
-		return "POST: \nby: " + this.getUserName() + "\nid: " + this.getUserId() + "\nchaneel id: " + this.getChannelId()
+		return "POST: \nby: " + this.getUserName() + "\nid: " + this.getUserId() + "\nchannel id: " + this.getChannelId()
 				+ "\nat: " + this.getTimeStamp() + "\ncontents: " + this.getContent() + "\n\n";
 	}
     /**
