@@ -61,9 +61,9 @@ public class TfIdfDataBuilder {
 			String contentFile = "slice" + writeFileCounter; 
 			//DataSet ds = vectorize(content,slice);
 			//dataSets.add(ds);
-			String[] args = new String[2];
+			String[] args = new String[1];
 			args[0] = contentFile;
-			args[1] = content;
+			System.out.println("args size is: " + args.length);
 			Vectorizer.main(args);
 		});
 		return dataSets;	

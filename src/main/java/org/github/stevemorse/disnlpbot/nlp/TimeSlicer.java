@@ -30,12 +30,15 @@ public class TimeSlicer {
 	
 	public List<List<Post>> slice() {
 		posts = bot.readFromFile();
-		System.out.println("first post: " + posts.get(posts.size() -1).toString());
-		System.out.println("last post: " + posts.get(0).toString());
-		startTime = posts.get(posts.size() -1).getTimeStamp();
+		Collections.sort(posts);
+		//Collections.reverse(posts);
+		System.out.println("first post: " + posts.get(0).toString());
+		System.out.println("last post: " + posts.get(posts.size() -1).toString());
+		startTime = posts.get(0).getTimeStamp();
 		endTime = startTime.plus(timeSliceSize, ChronoUnit.HOURS);
+		System.out.println(" 1stslice: " + sliceIndex + " is from: " + startTime + " to: " + endTime);
 		//iterate thru all posts
-		Collections.reverse(posts);
+		//Collections.reverse(posts);
 		posts.stream().forEach(post -> {
 			//this does one slice
 			//System.out.println("slice: " + sliceIndex + " is from: " + startTime + " to: " + endTime);
@@ -44,6 +47,7 @@ public class TimeSlicer {
 				oneSlice.add(post);
 			} else {
 				List<Post> temp = new ArrayList<Post>(oneSlice);
+				//System.out.println("size of oneSlice: " + oneSlice.size() + " temp size is: " + temp.size());
 				this.timeSlices.add(temp);
 				System.out.println("timeSlices has: " + this.timeSlices.size() + " elements after adding arrayList of: " + this.timeSlices.get(sliceIndex).size() + " posts");
 				oneSlice.clear();
@@ -53,7 +57,7 @@ public class TimeSlicer {
 			}//else
 		});//lamda
 		this.timeSlices.add(sliceIndex,oneSlice);
-		System.out.println("timeSlices has: " + this.timeSlices.size() + " elements after adding arrayList of: " + this.timeSlices.get(sliceIndex).size() + " posts");
+		System.out.println("timeSlices has: " + this.timeSlices.size() + " elements after adding last arrayList of: " + this.timeSlices.get(sliceIndex).size() + " posts");
 		return timeSlices;
 	}//slice	
 }
