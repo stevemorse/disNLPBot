@@ -158,17 +158,7 @@ public class AccessibleTfidfVectorizer extends TfidfVectorizer{
 
             return vectorizer;
         }
-        /*
-		public Builder setTokenizerFactory(UimaTokenizerFactory uimaTokenizerFactory) {
-			try {
-				this.tokenizerFactory = new UimaTokenizerFactory();
-			} catch (ResourceInitializationException e) {
-				e.printStackTrace();
-			}
-			return this;
-		}
-		*/
-
+        
 		public void setTokenizerFactory(DefaultTokenizerFactory defaultTokenizerFactory) {
 			this.tokenizerFactory = new DefaultTokenizerFactory();
 		}

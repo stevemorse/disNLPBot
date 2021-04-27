@@ -104,66 +104,6 @@ public class TfIdfDataBuilder {
 		}//catch
 	}//writeSliceToFile
 	
-/*	
-	private DataSet vectorize(String content, List<Post> slice) {
-		
-        
-		AccessibleTfidfVectorizer.Builder builder = new AccessibleTfidfVectorizer.Builder();
-		builder.setTokenizerFactory(new DefaultTokenizerFactory());
-		builder.setStopWords(getStopWords());
-		AccessibleTfidfVectorizer vec = builder.build();
-		vec.getVocabCache().vocabWords().clear();
-		vec.resetVocabCache();
-		System.out.println("vocab cache after clear is:\n" + vec.getVocabCache().numWords());
-		List<String> sourcesList = new ArrayList<String>();
-		sourcesList.add("tf_idf");
-		LabelsSource labelSource = new LabelsSource(sourcesList);
-		vec.setLabelsSource(labelSource);
-		CollectionSentenceIterator iter = new CollectionSentenceIterator(iterLoadData);
-		BasicLabelAwareIterator.Builder b = new Builder(iter);
-		BasicLabelAwareIterator baIter = b.build();
-		vec.setIterator(baIter);
-		vec.fit();
-		DataSet ds = vec.vectorize(content,"tf_idf");
-		System.out.println("data set after vectorize is:\n" + ds.toString());
-		VocabCache<VocabWord> vc = vec.getVocabCache();
-		System.out.println("vocab cache is:\n" + vc.numWords());
-		if(slice.size() != 0) {
-			List<String> words = new ArrayList<String>();
-			int totalWords = 0;
-			for(int count = 0; count < vc.numWords(); count++) {
-				totalWords += vc.wordFrequency(vc.wordAtIndex(count));
-			}//for
-			for(int count = 0; count < vc.numWords(); count++) {
-				words.add(vc.wordAtIndex(count) + ", " + vc.wordFrequency(vc.wordAtIndex(count)) + ", " 
-						+ vc.wordFrequency(vc.wordAtIndex(count))/(float)totalWords + "\n");
-			}//for
-			Instant start = slice.get(0).getTimeStamp();
-			Instant end = slice.get(slice.size() -1).getTimeStamp();
-			printToFile(words,start,end);
-		}//if slice size != 0
-		return ds;
-	}//vectorize
-*/	
-	private List<String> getStopWords(){
-		List<String> stopwords = new ArrayList<String>();
-		DisNLPBot bot = new DisNLPBot();
-		File stopwordsFile = new File(bot.getResources(bot.getResourceFileName(),"stopwords"));
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(stopwordsFile));
-			String stopword; 
-			while ((stopword = reader.readLine()) != null) {
-				stopwords.add(stopword);
-				//System.out.println(stopword); 
-		  	}//while
-			reader.close();
-		} catch (IOException ioe) {
-			System.out.println(ioe.getMessage());
-			ioe.printStackTrace();
-		}//catch
-		return stopwords;	
-	}//getStopWords
-	
 	public void writeDataSets(List<DataSet> dataSets) {
 		System.out.println("number of datasets: " + dataSets.size());
 		dataSets.stream().forEachOrdered(ds -> {	

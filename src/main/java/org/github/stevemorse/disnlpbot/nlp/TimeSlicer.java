@@ -31,23 +31,19 @@ public class TimeSlicer {
 	public List<List<Post>> slice() {
 		posts = bot.readFromFile();
 		Collections.sort(posts);
-		//Collections.reverse(posts);
 		System.out.println("first post: " + posts.get(0).toString());
 		System.out.println("last post: " + posts.get(posts.size() -1).toString());
 		startTime = posts.get(0).getTimeStamp();
 		endTime = startTime.plus(timeSliceSize, ChronoUnit.HOURS);
 		System.out.println(" 1stslice: " + sliceIndex + " is from: " + startTime + " to: " + endTime);
 		//iterate thru all posts
-		//Collections.reverse(posts);
 		posts.stream().forEach(post -> {
 			//this does one slice
-			//System.out.println("slice: " + sliceIndex + " is from: " + startTime + " to: " + endTime);
 			if(post.getTimeStamp().isBefore(endTime)) {
 				//System.out.println("post time is " + post.getTimeStamp() + " must be after:  " + startTime + " and before: " + endTime);
 				oneSlice.add(post);
 			} else {
 				List<Post> temp = new ArrayList<Post>(oneSlice);
-				//System.out.println("size of oneSlice: " + oneSlice.size() + " temp size is: " + temp.size());
 				this.timeSlices.add(temp);
 				System.out.println("timeSlices has: " + this.timeSlices.size() + " elements after adding arrayList of: " + this.timeSlices.get(sliceIndex).size() + " posts");
 				oneSlice.clear();
