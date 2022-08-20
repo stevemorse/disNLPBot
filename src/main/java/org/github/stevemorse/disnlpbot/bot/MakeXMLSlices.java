@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -38,6 +39,15 @@ public class MakeXMLSlices {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 			ListIterator<Post> oneSliceIter = currentSlice.listIterator();
+			Instant startTimeOfSlice = currentSlice.get(0).getTimeStamp();
+			Instant stopTimeOfSlice = startTimeOfSlice.plus(timeSliceSize, ChronoUnit.HOURS);
+			//make header
+			writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n");
+			writer.write("<SLICE>" + "\n");
+			writer.write("<STARTTIME>" + startTimeOfSlice + "</STARTTIME>" + "\n");
+			writer.write("<STOPTIME>" + stopTimeOfSlice + "</STOPTIME>" + "\n");
+			writer.write("</SLICE>" + "\n");
+			//write posts
 			while(oneSliceIter.hasNext()) {
 				Post currentPost = oneSliceIter.next();
 				String xmlPostStr = maleXMLPostString(currentPost);
