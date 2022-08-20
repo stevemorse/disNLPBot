@@ -19,7 +19,7 @@ public class TimeSlicer {
 	List<List<Post>> timeSlices = null;
 	DisNLPBot bot = new DisNLPBot();
 
-	TimeSlicer(Long timeSliceSize){
+	public TimeSlicer(Long timeSliceSize){
 		this.timeSliceSize = timeSliceSize;
 		this.timeSlices = new ArrayList<List<Post>>();
 		this.oneSlice = new ArrayList<Post>();
